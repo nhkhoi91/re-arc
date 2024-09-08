@@ -126,15 +126,12 @@ def generate_cardinality_3(diff_lb=0, diff_ub=1) -> dict:
 
     color_pixels[bgc] = remaining_pixels
 
-    print(f'pixels: {color_pixels}')
     # Output grid
     color_freq = list(color_pixels.items())
     sorted_colors = [color for color, _ in sorted(color_freq, key=lambda x: x[1])]
     go = canvas(sorted_colors[0], (ONE, num_colors+1))
 
     for i, color in enumerate(sorted_colors):
-        print(f'color: {color}')
-        print(f'position: {i}')
         go = fill(go, color, {(0, i)})
     return {'input': c, 'output': go}
 
@@ -197,7 +194,7 @@ def generate_cardinality_5(diff_lb=0, diff_ub=1) -> dict:
     dim_bounds = (3, 30)
     colopts = interval(ZERO, TEN, ONE)
     total_pixels = 0
-    
+
     while total_pixels < n_times:
         h = unifint(diff_lb, diff_ub, dim_bounds)
         w = unifint(diff_lb, diff_ub, dim_bounds)
@@ -210,7 +207,7 @@ def generate_cardinality_5(diff_lb=0, diff_ub=1) -> dict:
     num_colors = unifint(diff_lb, diff_ub, (2, min(4, total_pixels)))
     fgcols = sample(remove(bgc, colopts), num_colors)
     remaining_pixels = total_pixels - n_times
-    
+
     chosen_color = sample(fgcols, 1)
     s = sample(inds, n_times)
     c = fill(c, chosen_color[0], s)
@@ -268,25 +265,21 @@ def generate_cardinality_6(diff_lb=0, diff_ub=1) -> dict:
         j = unifint(0, 1, (ZERO, w - TWO))
         square_inds = {(i, j), (i, j+ONE), (i+ONE, j), (i+ONE, j+ONE)}
         if all(ind in inds for ind in square_inds):
-            c = fill(c, color, square_inds)
-            print(f'square_inds: {square_inds}')
+            c = fill(c, pattern_color[0], square_inds)
             inds = difference(inds, square_inds)
             remaining_pixels -= FOUR
             break
 
     all_colors = combine(remove(pattern_color[0], fgcols), [bgc] )
     sort_inds = order(inds, lambda x: x[0] * w + x[1])
-    print(f'sort_inds: {sort_inds}')
     last_color = None
     for ind in sort_inds:
         valid_colors = difference(all_colors, last_color) if last_color else all_colors
         chosen_color = sample(valid_colors, 1)
-        print(chosen_color)
-        c = fill(c, chosen_color, ind)
+        c = fill(c, chosen_color[0], (ind,))
         last_color = chosen_color
 
     # output grid
     go = canvas(pattern_color[0], (ONE, ONE))
     return {'input': c, 'output': go}
-
 
