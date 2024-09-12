@@ -5,7 +5,7 @@ def generate_cardinality_1(diff_lb=0, diff_ub=1) -> dict:
     """
 
     Input: matrix of random sizes and colors
-    Output: (1, 1) matrix with color of higest frequency
+    Output: (1, 1) matrix with color of highest frequency
     """
 
     dim_bounds = (3, 30)
@@ -91,7 +91,7 @@ def generate_cardinality_2(diff_lb=0, diff_ub=1) -> dict:
         remaining_pixels -= num_pixels
 
     min_color = leastcolor(c)
-    go = canvan(min_color, (ONE, ONE))
+    go = canvas(min_color, (ONE, ONE))
 
     return {'input': c, 'output': go}
 
@@ -244,7 +244,7 @@ def generate_cardinality_6(diff_lb=0, diff_ub=1) -> dict:
     colopts = interval(ZERO, TEN, ONE)
     total_pixels = 0
 
-    while total_pixels < SIX:  # Minimum 4 pixels for a 2x2 square
+    while total_pixels < SIX:  # Minimum 6 pixels for a 2x2 square
         h = unifint(diff_lb, diff_ub, dim_bounds)
         w = unifint(diff_lb, diff_ub, dim_bounds)
         total_pixels = h * w
@@ -283,3 +283,26 @@ def generate_cardinality_6(diff_lb=0, diff_ub=1) -> dict:
     go = canvas(pattern_color[0], (ONE, ONE))
     return {'input': c, 'output': go}
 
+
+# def generate_objectness_0(diff_lb=0, diff_ub=1) -> dict:
+#     """
+#     Input: Grid with multiple colored shapes.
+#     Output: Grid containing only the largest object,
+#         with everything else as background
+#     """
+    
+#     dim_bounds = (3, 30)
+#     colopts = interval(ZERO, TEN, ONE)
+    
+    
+#     h = unifint(diff_lb, diff_ub, dim_bounds)
+#     w = unifint(diff_lb, diff_ub, dim_bounds)
+    
+#     bgc = ZERO
+#     c = canvas(bgc, (h, w))
+#     inds = totuple(asindices(c))
+     
+#     num_colors = unifint(diff_lb, diff_ub, (2, min(7, total_pixels)))
+#     fgcols = sample(remove(bgc, colopts), num_colors)
+    
+#     num_objects = 

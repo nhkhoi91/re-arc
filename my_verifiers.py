@@ -1,8 +1,21 @@
 from dsl import *
 
+def verify_cardinality_1(I: Grid) -> Grid:
+    x1 = {color: colorcount(I, color) for color in palette(I)}
+    x2 = argmax(x1.keys(), lambda x: x1[x])
+    x3 = canvas(x2, (ONE, ONE))
+    return x3
+
+
+def verify_cardinality_2(I: Grid) -> Grid:
+    x1 = {color: colorcount(I, color) for color in palette(I)}
+    x2 = argmin(x1.keys(), lambda x: x1[x])
+    x3 = canvas(x2, (ONE, ONE))
+    return x3
+    
 def verify_cardinality_3(I: Grid) -> Grid:
-    x0 = lbind(colorcount, nested_tuple)
-    x1 = palette(nested_tuple)
+    x0 = lbind(colorcount, I)
+    x1 = palette(I)
     x2 = order(x1, x0)
     x3 = canvas(first(x2), (ONE, len(x1)))
     fill_operations = frozenset(
@@ -13,6 +26,7 @@ def verify_cardinality_3(I: Grid) -> Grid:
 
     for x, op in zip(x2, fill_operations):
         x3 = fill(x3, x, op)
+    return x3
 
 
 def verify_cardinality_4(I: Grid) -> Grid:
